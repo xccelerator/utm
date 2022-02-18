@@ -1,5 +1,4 @@
 import numpy as np
-from pyvis.network import Network
 import pandas as pd
 import os
 
