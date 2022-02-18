@@ -67,12 +67,12 @@ def parcLargime(lista, initial):
                 asteptare.append(vecini - 1)
 
 #parcurgerea in adancime 
-vizitate = set()
+vizitate = [] 
 
 def parcAdancime(vizitate, lista, nodul):
     if nodul not in vizitate:
         print(nodul + 1, end=' ')
-        vizitate.add(nodul)
+        vizitate.append(nodul)
         for vecini in lista[nodul][0:len(lista[nodul]) - 1]:
             parcAdancime(vizitate, lista, vecini - 1)
 
