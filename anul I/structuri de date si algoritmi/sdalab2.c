@@ -10,6 +10,7 @@ struct elev{
 
 const char name[][16] = {"Dragos", "Roxana", "Sorin", "Maxim", "Catalin", "Cristian", "Vasile", "Stefan", "Ecaterina", "Iana", "Nichita"};
 
+//adauga element nou la sfarsitul listei
 void append(struct elev **head, char *name){
 	struct elev *newElev = (struct elev*)malloc(sizeof(struct elev));
 	struct elev *last = *head;
@@ -30,6 +31,7 @@ void append(struct elev **head, char *name){
 	last -> next = newElev;
 }
 
+//adauga element nou la inceputul listei
 void push(struct elev **head, char *nume){
 	struct elev *newElev = (struct elev*)malloc(sizeof(struct elev));
 
