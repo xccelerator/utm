@@ -5,7 +5,7 @@
 
 struct elev{
 	char *nume;
-	struct elev *next
+	struct elev *next;
 };
 
 const char name[][16] = {"Dragos", "Roxana", "Sorin", "Maxim", "Catalin", "Cristian", "Vasile", "Stefan", "Ecaterina", "Iana", "Nichita"};
