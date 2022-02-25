@@ -33,7 +33,7 @@ def afisLista(lista,nodes):
                 print(lAdj[i][j],'_',sep='',end='')
         print(0)
 
-    print("\nNumarul total de noduri:",nodes)
+    print("\nPonderele:")
 
     for i in lista:
         print(i[0],' -> ',i[1],'; w = ',i[2], sep = "")
@@ -59,7 +59,7 @@ init = int(input("\nDati nodul de la care se va calcula drumul minim: "))
 
 distanta = fordBellman(nodes, lista, init - 1)
 
-print("\nNodul initial este : ",init,"\n")
+print("\n")
 
 for i in range(0, len(distanta)):
     if i != init - 1:
