@@ -51,13 +51,14 @@ void aleator(struct elev **head, int num){
 
 
 void afisare(struct elev *head){
+	int i = 1;
 	if(head == NULL){
 		printf("Lista este Nula");
 		return;
 	}
 
 	while(head != NULL){
-		printf("%s\n", head -> nume);
+		printf("%d) %s\n",i++, head -> nume);
 		head = head -> next;
 	}
 }
@@ -126,10 +127,9 @@ void insertPos(struct elev **head, char *nume, int pos){
 		return;
 	}
 
-	while(i < pos){
+	for(int i = 1; i < pos; i++){
 		prev = curent;
 		curent = curent -> next;
-		i++;
 	}
 
 	temp -> next = curent;
@@ -137,8 +137,7 @@ void insertPos(struct elev **head, char *nume, int pos){
 }
 
 void deletePos(struct elev **head, int pos){
-	int i = 1;
-	struct elev *temp = *head, *prev;
+	struct elev *temp = *head, *del;
 
 	if(pos == 1){
 		(*head) = (*head) -> next;
@@ -146,13 +145,15 @@ void deletePos(struct elev **head, int pos){
 		return;
 	}
 
-	while(i < pos){
-		prev = temp;
+	for(int i = 1; i < pos - 1; i++)
 		temp = temp -> next;
-		i++;
-	}
 
-	prev -> next = temp -> next;
+	del = temp -> next;
+
+	temp -> next = temp -> next -> next;
+
+	del -> next = NULL;
+	free(del);
 }
 
 void inversList(struct elev **head){
