@@ -37,6 +37,13 @@ void push(struct elev **head, char *nume){
 
 	newElev -> nume = (char*)malloc((strlen(nume) + 1) * sizeof(char));
 	strcpy(newElev -> nume, nume);
+
+	if(*head == NULL){
+		newElev -> next = NULL;
+		*head = newElev;
+		return;
+	}
+
 	newElev -> next = *head;
 
 	(*head) = newElev;
