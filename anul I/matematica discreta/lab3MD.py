@@ -2,7 +2,7 @@ import numpy as np
 import os
 
 
-def fordBellman(nodes, lista, start):
+def ford(nodes, lista, start):
     dist = [float("Inf")] * nodes
     dist[start] = 0
 
