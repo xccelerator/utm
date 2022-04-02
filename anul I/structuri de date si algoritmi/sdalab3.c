@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <conio.h>
 
 struct tree{
 	int value;
@@ -139,7 +140,7 @@ void clearTree(struct tree **head){
 
 void aleator(struct tree **head, int num){
 	for(int i = 0; i < num; i++) 
-		add(&(*head), rand() % 100);
+		add(&(*head), rand() % 22 + 10);
 }
 
 void menu(){
@@ -168,9 +169,7 @@ int main(){
 	printf("Dati numarul de elemente:");
 	scanf("%d",&num);
 
-
 	aleator(&head, num);
-
 
 	do{
 		system("cls");
@@ -230,7 +229,7 @@ int main(){
 		}
 
 		printf("\nPress any key to continue...");
-		getch();
+		_getch();
 	}while(option != 0);
 
 	return 0;

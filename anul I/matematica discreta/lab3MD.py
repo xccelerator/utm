@@ -57,7 +57,7 @@ afisLista(lista,nodes)
 
 init = int(input("\nDati nodul de la care se va calcula drumul minim: "))
 
-distanta = fordBellman(nodes, lista, init - 1)
+distanta = ford(nodes, lista, init - 1)
 
 print("\n")
 
