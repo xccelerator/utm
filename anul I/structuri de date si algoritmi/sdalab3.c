@@ -213,7 +213,7 @@ int main(){
 
 			case 6:
 				clearTree(&head);
-				printf("Lista a fost curatata cu succes!");
+				printf("Stejarul a fost curatit cu succes!");
 			break;
 
 			case 7:
