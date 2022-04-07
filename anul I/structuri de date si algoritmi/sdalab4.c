@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "bfs.c"
 
 struct elev{
 	int key;
@@ -85,10 +84,56 @@ struct tree * search(struct tree *head, int key){
 		return search(head -> left, key);
 }
 
+//--------------------------BFS-----------------------------------
+
+struct list{
+	void *node;
+	struct list *next;
+};
+
+void append(struct list **head, struct tree *node){
+	struct list *temp = (struct list*)malloc(sizeof(struct list));
+	temp -> node = node;
+	temp -> next = NULL;
+
+	if(!(*head))
+		*head = temp;
+
+	else {
+		struct list *current = *head;
+		while(current -> next)
+			current = current -> next;
+
+		current -> next = temp;
+	}
+}
+
+struct list * popFirst(struct list **head){
+	if(*head){
+		struct list *temp = *head;
+		(*head) = (*head) -> next;
+		return temp;
+	}
+	return NULL;
+}
+
+void clearList(struct list **head){
+	struct list *prev = NULL;
+	while(*head){
+		prev = *head;
+		(*head) = (*head) -> next;
+
+		free(prev);
+	}
+}
+
+void deleteList(struct list **head){
+	clearList(&(*head));
+	free(*head);
+}
+
 void BFS(struct tree *head){
-	struct list * vizitate = NULL;
-	struct list * asteptare = NULL;
-	struct list * temp = NULL;
+	struct list *vizitate = NULL, *asteptare = NULL, *temp = NULL;
 	struct tree * tempTree = NULL;
 
 	append(&asteptare, head);
@@ -119,13 +164,7 @@ void BFS(struct tree *head){
 	deleteList(&asteptare);
 }
 
-void DFS(struct tree *head){
-	if(head){
-		printf("%d %s %s %.2f\n", head -> data.key, head -> data.nume, head -> data.prenume, head -> data.notaMedie);
-		DFS(head -> left);
-		DFS(head -> right);
-	}
-}
+//----------------------------------------------------------------
 
 void mirrorTree(struct tree **head){
 	if(!(*head))
@@ -142,7 +181,6 @@ void mirrorTree(struct tree **head){
 }
 
 
-
 int main(){
 	struct tree *head = NULL;
 
@@ -154,12 +192,12 @@ int main(){
 	add(&head, 5, "dragos123", "cojocari5", 7.55);
 	add(&head, 3, "dragos22", "cojocari3", 6.57);
 
+	/*
 	printIn(head);
 	mirrorTree(&head);
 	printf("\n");
 	printIn(head);
 
-/*
 	afisare(head);
 
 	struct tree *temp = search(head, 6);
@@ -178,10 +216,8 @@ int main(){
 	printf("\nBFS\n");
 	BFS(head);
 
-	printf("\nDFS\n");
-
-	DFS(head);
-
 */
+
+
 	return 0;
 }
