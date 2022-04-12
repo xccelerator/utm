@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 
 struct elev{
 	int key;
@@ -13,6 +14,10 @@ struct tree{
 	struct elev data;
 	struct tree *left, *right;
 };
+
+const char nume[][20] = {"Dragos","Ecaterina","Catalin","Doru","Nichita","Mihail","Nicu","Eduard","Nicoleta","Vova"};
+const char prenume[][20] = {"Cojocari","Popa","Plesu","Apareci","Furuncea","Lukashuk","Druta","Robovol","Bors","Vozian"};
+int currKey = 0;
 
 void add(struct tree **head, int key, char *nume, char *prenume, float notaMedie){
 	if(!(*head)){
@@ -33,6 +38,15 @@ void add(struct tree **head, int key, char *nume, char *prenume, float notaMedie
 
 	if((*head) -> data.key > key)
 		add(&(*head) -> left, key, nume, prenume, notaMedie);
+}
+
+void aleator(struct tree **head, int num){
+	srand(time(NULL));
+	int i;
+	printf("%d %d %d ", currKey, num, currKey+num);
+	for(i = currKey; i <  currKey + num; i++)
+		add(&(*head), i + 1, nume[rand() % 10], prenume[rand() % 10], ((5 * ((float)rand() / RAND_MAX)) + 5));
+	currKey = i;
 }
 
 void printIn(struct tree *head){
@@ -60,8 +74,10 @@ void printPost(struct tree *head){
 }
 
 void afisare(struct tree *head){
-	if(!head)
+	if(!head){
+		printf("Arborele nu are elemente!\n");
 		return;
+	}
 
 	printf("Afisarea Preordine:\n");
 	printPre(head);
@@ -85,7 +101,6 @@ struct tree * search(struct tree *head, int key){
 }
 
 //--------------------------BFS-----------------------------------
-
 struct list{
 	void *node;
 	struct list *next;
@@ -163,7 +178,6 @@ void BFS(struct tree *head){
 	deleteList(&vizitate);
 	deleteList(&asteptare);
 }
-
 //----------------------------------------------------------------
 
 void mirrorTree(struct tree **head){
@@ -180,44 +194,99 @@ void mirrorTree(struct tree **head){
 	(*head) -> right = temp;
 }
 
+void deleteTree(struct tree **head){
+	if(*head == NULL)
+		return;
+
+	deleteTree(&(*head) -> left);
+	deleteTree(&(*head) -> right);
+
+	free(*head);
+}
+
+void clearTree(struct tree **head){
+	deleteTree(&(*head) -> left);
+	deleteTree(&(*head) -> right);
+	*head = NULL;
+}
+
+void menu(){
+	printf("1.Adaugarea elementelor. \n");
+	printf("2.Cautarea nodului in baza campului cheie de afisare a campurilor nodului gasit. \n");
+	printf("3.Parcurgerea arborelui in largime(BFS). \n");
+	printf("4.Balansarea arborelui. \n");
+	printf("5.Oglindirea arborelui. \n");
+	printf("6.Curatirea elementelor arborelui. \n");
+	printf("0.Iesirea din program. \n");
+}
 
 int main(){
 	struct tree *head = NULL;
+	int num, option;
 
-	add(&head, 8, "dragos123", "cojocari5", 7.55);
-	add(&head, 6, "dragos22", "cojocari3", 6.57);
-	add(&head, 4, "dragos22", "cojocari3", 6.57);
-	add(&head, 2, "dragos22", "cojocari3", 6.57);
-	add(&head, 1, "dragos", "cojocari", 5.55);
-	add(&head, 5, "dragos123", "cojocari5", 7.55);
-	add(&head, 3, "dragos22", "cojocari3", 6.57);
+	srand(time(NULL));
 
-	/*
-	printIn(head);
-	mirrorTree(&head);
-	printf("\n");
-	printIn(head);
+	system("cls");
+	printf("Dati numarul de elevi:");
+	scanf("%d",&num);
 
-	afisare(head);
+	aleator(&head,num);
 
-	struct tree *temp = search(head, 6);
-	if(temp)
-		printf("\n%d %s %s %.2f", temp -> data.key, temp -> data.nume, temp -> data.prenume, temp -> data.notaMedie);
-	else printf("\nElevul cu cheia data nu a fost gasit.");
+	do{
+		system("cls");
+		afisare(head);
+		printf("\n");
+		menu();
+		printf("Alegeti optiunea:");
+		fflush(stdin);
+		scanf("%d",&option);
 
-	struct list *temp= NULL;
-	append(&temp, head -> right);
-	append(&temp, head);
-	append(&temp, head -> left);
+		switch(option){
+			case 1:
+				printf("Dati numarul de elevi care vor urma a fi adaugati:");
+				scanf("%d",&num);
 
-	struct tree *tempTree;
-	struct list *foo = NULL;
+				printf("%d", currKey);
+				aleator(&head,num);
+			break;
 
-	printf("\nBFS\n");
-	BFS(head);
+			case 2:
+				printf("\nDati cheia elementului care doriti sal cautati:");
+				scanf("%d",&num);
+				struct tree *temp = search(head, num);
 
-*/
+				printIn(temp);
+			break;
 
+			case 3:
+				printf("\nAfisarea parcurgerii arborelui in largime:\n");
+				BFS(head);
+			break;
+
+			case 4:
+				//balansare
+			break;
+
+			case 5:
+				printf("\nArborele oglindit:\n");
+				mirrorTree(&head);
+				printIn(head);
+			break;
+
+			case 6:
+				clearTree(&head);
+				printf("Arborele a fost curatit cu succes.");
+			break;
+
+			case 0:
+				deleteTree(&head);
+				printf("Arborele a fost sters cu succes.");
+			break;
+		}
+
+		printf("\nPress any key to continue...");
+		getch();
+	}while(option != 0);
 
 	return 0;
 }
