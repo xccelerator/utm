@@ -43,9 +43,10 @@ void add(struct tree **head, int key, char *nume, char *prenume, float notaMedie
 void aleator(struct tree **head, int num){
 	srand(time(NULL));
 	int i;
-	printf("%d %d %d ", currKey, num, currKey+num);
-	for(i = currKey; i <  currKey + num; i++)
+	for(i = currKey; i <  currKey + num; i++){
+		int key;
 		add(&(*head), i + 1, nume[rand() % 10], prenume[rand() % 10], ((5 * ((float)rand() / RAND_MAX)) + 5));
+	}
 	currKey = i;
 }
 
@@ -210,6 +211,31 @@ void clearTree(struct tree **head){
 	*head = NULL;
 }
 
+
+int index = 0;
+
+void readIn(struct tree *head, struct elev arr[]){
+	if(head){
+		readIn(head -> left, arr);
+		arr[index++] = head -> data;
+		readIn(head -> right, arr);
+	}
+}
+
+struct tree *balancedTree(struct elev arr[], int inceput, int sfarsit){
+	if(inceput > sfarsit)
+		return NULL;
+
+	int mijloc = (inceput + sfarsit)/2;
+	struct tree *temp = (struct tree*)malloc(sizeof(struct tree));
+
+	temp -> data = arr[mijloc];
+	temp -> left = balancedTree(arr, inceput, mijloc - 1);
+	temp -> right = balancedTree(arr, mijloc + 1, sfarsit);
+
+	return temp;
+}
+
 void menu(){
 	printf("1.Adaugarea elementelor. \n");
 	printf("2.Cautarea nodului in baza campului cheie de afisare a campurilor nodului gasit. \n");
@@ -231,7 +257,7 @@ int main(){
 	scanf("%d",&num);
 
 	aleator(&head,num);
-
+	struct elev *tempElev = (struct elev*)malloc(currKey * sizeof(struct elev));
 	do{
 		system("cls");
 		afisare(head);
@@ -246,8 +272,8 @@ int main(){
 				printf("Dati numarul de elevi care vor urma a fi adaugati:");
 				scanf("%d",&num);
 
-				printf("%d", currKey);
 				aleator(&head,num);
+				tempElev = (struct elev*)realloc(tempElev, currKey * sizeof(struct elev));
 			break;
 
 			case 2:
@@ -264,7 +290,10 @@ int main(){
 			break;
 
 			case 4:
-				//balansare
+				index = 0;
+				readIn(head, tempElev);
+				struct tree *balanceInAllThings = balancedTree(tempElev, 0, currKey - 1);
+				BFS(balanceInAllThings);
 			break;
 
 			case 5:
@@ -275,6 +304,7 @@ int main(){
 
 			case 6:
 				clearTree(&head);
+				currKey = 0;
 				printf("Arborele a fost curatit cu succes.");
 			break;
 
