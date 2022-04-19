@@ -293,13 +293,16 @@ int main(){
 				index = 0;
 				readIn(head, tempElev);
 				struct tree *balanceInAllThings = balancedTree(tempElev, 0, currKey - 1);
+				printf("\nAfisarea BFS a arborelui balansat:\n");
 				BFS(balanceInAllThings);
+
+				printf("\nAfisarea inordine a arborelui balansat:\n");
+				printIn(balanceInAllThings);
 			break;
 
 			case 5:
-				printf("\nArborele oglindit:\n");
 				mirrorTree(&head);
-				printIn(head);
+				printf("\nArborele a fost oglindit cu succes!\n");
 			break;
 
 			case 6:
