@@ -131,8 +131,13 @@ int linearSearch(int num, int n, int arr[]){
 	return 0;
 }
 
-int linearSearchFunc(int n){
+void linearSearchFunc(int n){
 	int *arr = (int*)malloc(n * sizeof(int));
+	if(arr == NULL){
+		printf("\nNu sa primit de alocat memoria.\n");
+		return;
+	}
+
 	for(int i = 0; i < n; i++)
 		arr[i] = rand() % n;
 
@@ -140,63 +145,56 @@ int linearSearchFunc(int n){
 
 	int pos = linearSearch(-1 ,n,arr);
 
+	clock_t end = clock();
+
 	if(pos)
-		printf("\nElementul a fost gasit pe pozitia %d.\n", pos);
+		printf("\nElementul a fost gasit pe pozitia %d.\n", pos - 1);
 	else printf("\nElementul dat nu a fost gasit.\n");
 
-	clock_t end = clock();
 
 	printf("Timpul de executie: %f secunde.\n\n", (float)(end - begin) / CLOCKS_PER_SEC);
 
 	free(arr);
 }
 
-struct tree{
-	int data;
-	struct tree *left, *right;
-};
+int binarySearch(int arr[], int left, int right, int x){
+	if(right >= left){
+		int mid = left + (right - left) / 2;
 
-void insert(struct tree **head, int data){
-	if(!(*head)){
-		(*head) = (struct tree*)malloc(sizeof(struct tree));
-		(*head) -> data = data;
-		(*head) -> left = (*head) -> right = NULL;
-		return;
+		if(arr[mid] == x)
+			return mid + 1;
+
+		if(arr[mid] > x)
+			return binarySearch(arr, left, mid - 1, x);
+
+		return binarySearch(arr, mid + 1, right, x);
 	}
 
-	if(data < (*head) -> data)
-		return insert(&(*head) -> left, data);
-
-	if(data > (*head) -> data)
-		return insert(&(*head) -> right, data);
-}
-
-struct tree *binarySearch(struct tree *head, int data){
-	if(!head || head -> data == data)
-		return head;
-
-	if(data < head -> data)
-		return binarySearch(head -> left, data);
-
-	if(data > head -> data)
-		return binarySearch(head -> right, data);
+	return 0;
 }
 
 void binarySearchFunc(int n){
-	struct tree *head = NULL;
+	int *arr = (int*)malloc(n * sizeof(int));
+	if(arr == NULL){
+		printf("\nNu sa primit de alocat memoria.\n");
+		return;
+	}
 
 	for(int i = 0; i < n; i++)
-		insert(&head, rand() % n);
+		arr[i] = rand() % n;
+
+	mergeSort(arr, 0, n - 1);
 
 	clock_t begin = clock();
 
-	struct tree *pos = binarySearch(head, -1);
-
-	if(pos)
-		printf("Elementul a fost gasit.\n");
-	else printf("Elementul dat nu a fost gasit.\n");
+	int pos = binarySearch(arr, 0, n - 1, -1);
 
 	clock_t end = clock();
+
+	if(pos)
+		printf("\nElementul a fost gasit pe pozitia %d.\n",pos - 1);
+	else printf("\nElementul nu a fost gasit in tabel.\n");
+
 
 	printf("Timpul de executie: %f secunde.\n\n", (float)(end - begin) / CLOCKS_PER_SEC);
 }
@@ -222,14 +220,16 @@ int main(){
 	printf("Bubble sort cu 10000 elemente:\n");
 	bubbleSort(10000);
 	printf("Bubble sort cu 100000 elemente:\n");
-	bubbleSort(100000);
+	bubbleSort(10000);
 
 	printf("--------------------------------------------\n");
 
-	int n = 1000000;
+	int n = 500000;
 
 	printf("\n\n------------Algoritmii de cautare------------\n");
+	printf("\nLinear search:");
 	linearSearchFunc(n);
+	printf("Binary search:");
 	binarySearchFunc(n);
 	printf("---------------------------------------------");
 
