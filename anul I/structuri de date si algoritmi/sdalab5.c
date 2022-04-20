@@ -123,10 +123,90 @@ void mergeSortFunc(int n){
 	free(arr);
 }
 
+int linearSearch(int num, int n, int arr[]){
+	for(int i = 0; i < n; i++)
+		if(arr[i] == num)
+			return i + 1;
+
+	return 0;
+}
+
+int linearSearchFunc(int n){
+	int *arr = (int*)malloc(n * sizeof(int));
+	for(int i = 0; i < n; i++)
+		arr[i] = rand() % n;
+
+	clock_t begin = clock();
+
+	int pos = linearSearch(-1 ,n,arr);
+
+	if(pos)
+		printf("\nElementul a fost gasit pe pozitia %d.\n", pos);
+	else printf("\nElementul dat nu a fost gasit.\n");
+
+	clock_t end = clock();
+
+	printf("Timpul de executie: %f secunde.\n\n", (float)(end - begin) / CLOCKS_PER_SEC);
+
+	free(arr);
+}
+
+struct tree{
+	int data;
+	struct tree *left, *right;
+};
+
+void insert(struct tree **head, int data){
+	if(!(*head)){
+		(*head) = (struct tree*)malloc(sizeof(struct tree));
+		(*head) -> data = data;
+		(*head) -> left = (*head) -> right = NULL;
+		return;
+	}
+
+	if(data < (*head) -> data)
+		return insert(&(*head) -> left, data);
+
+	if(data > (*head) -> data)
+		return insert(&(*head) -> right, data);
+}
+
+struct tree *binarySearch(struct tree *head, int data){
+	if(!head || head -> data == data)
+		return head;
+
+	if(data < head -> data)
+		return binarySearch(head -> left, data);
+
+	if(data > head -> data)
+		return binarySearch(head -> right, data);
+}
+
+void binarySearchFunc(int n){
+	struct tree *head = NULL;
+
+	for(int i = 0; i < n; i++)
+		insert(&head, rand() % n);
+
+	clock_t begin = clock();
+
+	struct tree *pos = binarySearch(head, -1);
+
+	if(pos)
+		printf("Elementul a fost gasit.\n");
+	else printf("Elementul dat nu a fost gasit.\n");
+
+	clock_t end = clock();
+
+	printf("Timpul de executie: %f secunde.\n\n", (float)(end - begin) / CLOCKS_PER_SEC);
+}
+
 int main(){
 	srand(time(NULL));
 
-	printf("Merge sort cu 100 elemente:\n");
+	printf("---------------Algoritmii de sortare---------------\n");
+
+	printf("\nMerge sort cu 100 elemente:\n");
 	mergeSortFunc(100);
 	printf("Merge sort cu 1000 elemente:\n");
 	mergeSortFunc(1000);
@@ -143,6 +223,15 @@ int main(){
 	bubbleSort(10000);
 	printf("Bubble sort cu 100000 elemente:\n");
 	bubbleSort(100000);
+
+	printf("--------------------------------------------\n");
+
+	int n = 1000000;
+
+	printf("\n\n------------Algoritmii de cautare------------\n");
+	linearSearchFunc(n);
+	binarySearchFunc(n);
+	printf("---------------------------------------------");
 
 	return 0;
 }
