@@ -56,27 +56,18 @@ void merge(int arr[], int l, int m, int r){
 	int i = 0, j = 0, k = l;
 
 	while(i < n1 && j < n2){
-		if(L[i] <= R[j]){
-			arr[k] = L[i];
-			i++;
-		}else {
-			arr[k] = R[j];
-			j++;
-		}
+		if(L[i] <= R[j])
+			arr[k] = L[i++];
+		else arr[k] = R[j++];
+
 		k++;
 	}
 
-	while(i < n1){
-		arr[k] = L[i];
-		i++;
-		k++;
-	}
+	while(i < n1)
+		arr[k++] = L[i++];
 
-	while(j < n2){
-		arr[k] = R[j];
-		j++;
-		k++;
-	}
+	while(j < n2)
+		arr[k++] = R[j++];
 }
 
 void mergeSort(int arr[], int l, int r){
@@ -201,7 +192,6 @@ void binarySearchFunc(int n){
 
 int main(){
 	srand(time(NULL));
-
 	printf("---------------Algoritmii de sortare---------------\n");
 
 	printf("\nMerge sort cu 100 elemente:\n");
@@ -220,7 +210,7 @@ int main(){
 	printf("Bubble sort cu 10000 elemente:\n");
 	bubbleSort(10000);
 	printf("Bubble sort cu 100000 elemente:\n");
-	bubbleSort(10000);
+	bubbleSort(100000);
 
 	printf("--------------------------------------------\n");
 
