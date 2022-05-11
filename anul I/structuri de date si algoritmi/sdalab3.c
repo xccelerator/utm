@@ -139,7 +139,7 @@ void clearTree(struct tree **head){
 }
 
 void aleator(struct tree **head, int num){
-	for(int i = 0; i < num; i++) 
+	for(int i = 0; i < num; i++)
 		add(&(*head), rand() % 22 + 10);
 }
 

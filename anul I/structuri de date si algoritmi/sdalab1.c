@@ -52,7 +52,7 @@ void aleator(){
 }
 
 void afisare(){
-	printf("| Nr. | \tNume |  \tPrenume | Nota medie |\n"); 
+	printf("| Nr. | \tNume |  \tPrenume | Nota medie |\n");
 	for(int i = 0; i < n; i++)
 		printf("|%4d |%13s |%15s |%12.2f |\n", i + 1, elevi[i].nume, elevi[i].prenume, elevi[i].notaMedie);
 }
@@ -68,7 +68,7 @@ void cautare(){
 	while(i != n && b != 0){
 		if(strcmp(str,elevi[i].nume) == 0){
 			b = 0;
-			printf("| Nr. | \tNume |  \tPrenume | Nota medie |\n"); 
+			printf("| Nr. | \tNume |  \tPrenume | Nota medie |\n");
 			printf("|%4d |%13s |%15s |%12.2f |\n", i + 1, elevi[i].nume, elevi[i].prenume, elevi[i].notaMedie);
 		}
 		i++;
@@ -175,10 +175,10 @@ int main(){
 			case 1 : cautare(); break;
 			case 2 : stergere(); break;
 			case 3 : sort(); break;
-			case 4 : 
+			case 4 :
 				printf("Dati pozitia pe care doriti sa introduceti elementul nou: ");
 				scanf("%d",&pos);
-				inserare(pos); 
+				inserare(pos);
 			 break;
 			case 5 : insertEnd(); break;
 			case 6 : elibMem(); break;

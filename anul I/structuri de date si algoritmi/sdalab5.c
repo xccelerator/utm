@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 
+//O(n^2)
 void bubbleSort(int n){
 	int *arr = (int*)malloc(n * sizeof(int));
 	if(arr == NULL){
@@ -42,7 +43,7 @@ void bubbleSort(int n){
 }
 
 void merge(int arr[], int l, int m, int r){
-	int n1 = m - l + 1; 
+	int n1 = m - l + 1;
 	int n2 = r - m;
 
 	int L[n1], R[n2];
@@ -57,10 +58,8 @@ void merge(int arr[], int l, int m, int r){
 
 	while(i < n1 && j < n2){
 		if(L[i] <= R[j])
-			arr[k] = L[i++];
-		else arr[k] = R[j++];
-
-		k++;
+			arr[k++] = L[i++];
+		else arr[k++] = R[j++];
 	}
 
 	while(i < n1)
@@ -70,6 +69,7 @@ void merge(int arr[], int l, int m, int r){
 		arr[k++] = R[j++];
 }
 
+//O(n*logn)
 void mergeSort(int arr[], int l, int r){
 	if(l < r){
 		int m = l + (r - l) / 2;
@@ -104,13 +104,14 @@ void mergeSortFunc(int n){
 
 	clock_t end = clock();
 
-	printf("Tabloul a fost sortat in %f secunde.\n\n", (float)(end - begin) / CLOCKS_PER_SEC);
+printf("Tabloul a fost sortat in %f secunde.\n\n", (float)(end - begin));
 
 	/*
 	printf("\nTabloul sortat:\n");
 	for(int i = 0; i < n; i++)
 		printf("%d ",arr[i]);
 	*/
+
 	free(arr);
 }
 
@@ -122,6 +123,7 @@ int linearSearch(int num, int n, int arr[]){
 	return 0;
 }
 
+//O(n/2)
 void linearSearchFunc(int n){
 	int *arr = (int*)malloc(n * sizeof(int));
 	if(arr == NULL){
@@ -148,6 +150,7 @@ void linearSearchFunc(int n){
 	free(arr);
 }
 
+//O(logn)
 int binarySearch(int arr[], int left, int right, int x){
 	if(right >= left){
 		int mid = left + (right - left) / 2;

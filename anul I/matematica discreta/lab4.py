@@ -32,7 +32,7 @@ def grafAcoperire(lista, start):
     node[start - 1] = 1
     FA1.append(start)
 
-    while checkN(node): 
+    while checkN(node):
         if FA1:
             current = FA1.pop(0)
             node[current - 1] = 1
@@ -56,7 +56,7 @@ def grafAcoperire(lista, start):
             t = FA1
             FA1 = FA2
             FA2 = t
-        
+
         if not FA1 and not FA2:
             for i in range(len(node)):
                 if node[i] == 0:
