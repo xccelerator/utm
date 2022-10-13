@@ -1,5 +1,4 @@
 import math
-import pandas as pd
 
 #log(1+x) + x - 1.5
 def f1(x):
@@ -82,7 +81,7 @@ bisect(f1,0,2)
 print("Metoda aproximatiilor:")
 aprox(f1fi,0)
 print("Metoda Newton:")
-newton(f1,f1d,f1dd,0,1)
+newton(f1,f1d,f1dd,0,2)
 
 #x^3 + 25x - 37
 print("\nPentru f = x^3 + 25x - 37")
@@ -91,5 +90,5 @@ bisect(f2,-2,2)
 print("Metoda aproximatiilor:")
 aprox(f2fi,-2)
 print("Metoda Newton:")
-newton(f2,f2d,f2dd,-1,1)
+newton(f2,f2d,f2dd,-2,2)
 
