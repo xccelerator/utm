@@ -1,11 +1,46 @@
 #include <iostream>
+#include <time.h>
 
 using namespace std;
 
 #define max 500
 #define inf 99999
 
-//Floyd
+int phi[3] = {20, 50, 100};
+int nrVarf[3] = {10, 15, 20};
+int iterFloyd, iterDij;
+
+void reset(int graf[max][max]){
+	iterFloyd = iterDij = 0;
+
+	for(int i = 0; i < max; i++)
+		for(int j = 0; j < max; j++)
+			graf[i][j] = 0;
+}
+
+void grafCreate(int graf[max][max], int nrVarf,int dens){
+	for(int i = 0; i < nrVarf; i++)	
+		for(int j = 0; j < nrVarf; j++)	
+			if(j > i){
+				int r = rand() % 100 + 1;
+				if(r <= phi[dens]){
+					r = rand() % 10000 + 1;
+					graf[i][j] = r;
+				}
+			} else if(i > j){
+				graf[i][j] = graf[j][i];
+			}
+}
+
+void printGraf(int graf[max][max], int nrVarf){
+	for(int i = 0; i < nrVarf; i++){
+		for(int j = 0; j < nrVarf; j++)
+			cout << graf[i][j] << " ";
+		cout << endl;
+	}
+}
+
+//=====================================================Floyd============================================================
 void printPathFloyd(int start, int graphInit[max][max], int graphFloyd[max][max], int size){
 	int k;
 	int path[size];
@@ -47,20 +82,29 @@ void floyd(int graph[max][max], int size){
 	int D[max][max];
 
 	for(int i = 0; i < size; i++)
-		for(int j = 0; j < size; j++)
-			if(i != j && graph[i][j] == 0)
+		for(int j = 0; j < size; j++){
+			iterFloyd++;
+			if(i != j && graph[i][j] == 0){
+				iterFloyd++;
 				D[i][j] = inf;
-			else D[i][j] = graph[i][j];
+			}else{
+				iterFloyd++;
+				D[i][j] = graph[i][j];
+			}
+		}
 
 	for(int k = 0; k < size; k++)
 		for(int i = 0; i < size; i++)
-			for(int j = 0; j < size; j++)
-				D[i][j] = min(D[i][j], D[i][k]+D[k][j]);
+			for(int j = 0; j < size; j++){
+				iterFloyd++;
+				D[i][j] = min(D[i][j], D[i][k]+D[k][j]); iterFloyd++;
+			}
 
-	printPathFloyd(0,graph, D, size);
+	cout << "Numarul de iteratii(f) : " << iterFloyd << endl;
+	//printPathFloyd(0,graph, D, size);
 }
 
-//Dijkastra
+//===============================Dijkastra==============================================
 void printPathDijkastra(int start, int path[max], int cost[max], int size){
 	int k = 0;
 	cout << "=================Dijkastra:=====================" << endl;
@@ -95,7 +139,9 @@ int minCost(int cost[max], bool visited[max], int size){
 	int minIndex = 0;
 
 	for(int i = 0; i < size; i++){
+		iterDij++;
 		if(visited[i] == false && cost[i] <= min){
+			iterDij++;
 			min = cost[i];
 			minIndex = i;
 		}
@@ -119,30 +165,54 @@ void dijkastra(int graph[max][max],int start, int size){
 	for(int i = 0; i < size - 1; i++){
 		int min = minCost(cost,visited, size);
 		visited[min] = true;
-		for(int j = 0; j <= size; j++){
-			if(!visited[j] && graph[min][j] != 0 && cost[min] != max && (cost[min] + graph[min][j] < cost[j])){
+		for(int j = 0; j < size; j++){
+			iterDij++;
+			if(!visited[j] && graph[min][j] != 0 
+				&& cost[min] != max 
+				&& (cost[min] + graph[min][j] < cost[j])) {
+				iterDij++;
 				cost[j] = cost[min] + graph[min][j];
 				path[j] = min;
 			}
 		}
 	}
 
-	printPathDijkastra(0, path, cost, size);
+	cout << "Numarul de iteratii(d) : " << iterDij << endl;
+	//printPathDijkastra(0, path, cost, size);
 }
 
 int main(){
-	int graph[max][max] = {{0, 4, 0, 0, 0, 0, 0, 8, 0},
-						 {4, 0, 8, 0, 0, 0, 0, 11,0},
-						 {0, 8, 0, 7, 0, 4, 0, 0, 2},
-						 {0, 0, 7, 0, 9, 14,0, 0, 0},
-						 {0, 0, 0, 9, 0, 10,0, 0, 0},
-						 {0, 0, 4, 14, 10,0,2, 0, 0},
-						 {0, 0, 0, 0, 0, 2, 0, 1, 6},
-						 {8, 11,0, 0, 0, 0, 1, 0, 7},
-						 {0, 0, 2, 0, 0, 0, 6, 7, 0}};
+	srand(time(NULL));
+	int graf[max][max];
 
-	dijkastra(graph, 0,9);
-	floyd(graph, 9);
+	/*
+		0 - rar
+		1 - mediu
+		2 - dens
+	*/
+
+	for(int i = 0; i < 3; i++)
+		for(int j = 0; j < 3; j++){
+			switch(j){
+				case 0 : 
+					cout << "Graf rar cu " << nrVarf[i] << " varfuri." << endl;
+					break;
+				case 1 : 
+					cout << "Graf mediu cu " << nrVarf[i] << " varfuri." << endl;
+					break;
+				case 2 : 
+					cout << "Graf dens cu " << nrVarf[i] << " varfuri." << endl;
+					break;
+			}
+
+			reset(graf);
+			grafCreate(graf,nrVarf[i],j);
+			//printGraf(graf, nrVarf[i]);
+			dijkastra(graf, 0, nrVarf[i]);
+			floyd(graf, nrVarf[i]);
+
+			cout << endl;
+		}
 
 	return 0;
 }
