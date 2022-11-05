@@ -7,7 +7,7 @@ using namespace std;
 #define inf 99999
 
 int phi[3] = {20, 50, 100};
-int nrVarf[3] = {10, 15, 20};
+int nrVarf[3] = {10, 50, 100};
 int iterFloyd, iterDij;
 
 void reset(int graf[max][max]){
