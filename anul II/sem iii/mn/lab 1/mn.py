@@ -1,28 +1,24 @@
 import math
 
-#log(1+x) + x - 1.5
+#2^x+3x-0.5
 def f1(x):
-    return math.log10(1+x) + x - 1.5
+    return 2**x +3*x-0.5
 # fi (pentru medota aproximarilor)
 def f1fi(x):
-    return 1.5 - math.log10(1+x)
+    return (0.5-2**x)/3
 #f1 derivat si dublu derivat pentru metoda newton
 def f1d(x):
-    return 1/(math.log10(10)*(x+1)) + 1
-def f1dd(x):
-    return -1/(math.log(10)*(x+1)**2)
+    return math.log(2)*2**x+3
 
-#x^3 + 25x - 37
+#x^3-37x-52
 def f2(x):
-    return x**3 + 25*x - 37
+    return x**3-37*x-52
 # fi (pentru medota aproximarilor)
 def f2fi(x):
-    return (x**3-37)/(-25)
+    return (52-x**3)/(-37)
 #f2 derivat si dublu derivat pentru metoda newton
 def f2d(x):
-    return 3*x**2 + 25
-def f2dd(x):
-    return 6*x
+    return 3*x**2 -37 
 
 def afisare(x, i, err):
     print("x =", x, "Iteratii:", i,"Eroare:",err)
@@ -56,32 +52,12 @@ def aprox(func, a):
             afisare(x,i,a-x)
             return x
 
-#metoda newton
-def newton(func, dFunc, ddFunc, a, b):
-    i = 0
-    if(func(a) * ddFunc(a) > 0):
-        x = x1 = a
-    else:
-        x = x1 = b
-
-    while True:
-        x = x1
-        x1 = x - func(x) / dFunc(x)
-
-        i += 1
-        if(abs(x1-x) < 10**(-6)):
-            afisare(x,i,x1-x)
-            return x1
-
-
 #log(1+x) + x - 1.5
 print("Pentru f = log(1+x) + x - 1.5")
 print("Metoda injumatatirii:")
 bisect(f1,0,2)
 print("Metoda aproximatiilor:")
 aprox(f1fi,0)
-print("Metoda Newton:")
-newton(f1,f1d,f1dd,0,2)
 
 #x^3 + 25x - 37
 print("\nPentru f = x^3 + 25x - 37")
@@ -89,6 +65,4 @@ print("Metoda injumatatirii:")
 bisect(f2,-2,2)
 print("Metoda aproximatiilor:")
 aprox(f2fi,-2)
-print("Metoda Newton:")
-newton(f2,f2d,f2dd,-2,2)
 
